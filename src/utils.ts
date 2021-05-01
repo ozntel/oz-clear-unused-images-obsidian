@@ -96,7 +96,7 @@ const clearUnusedImages = (app: App) => {
             new Notice('All images are used. Nothing was deleted.')
         }
         
-    }, 500)
+    }, 2000)
 }
 
 export { clearUnusedImages };
