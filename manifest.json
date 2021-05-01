@@ -6,5 +6,5 @@
 	"description": "Clear the images that you are not using anymore in your markdown notes to save space.",
 	"author": "Ozan",
 	"authorUrl": "https://www.ozan.pl",
-	"isDesktopOnly": true
+	"isDesktopOnly": false
 }
