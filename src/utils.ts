@@ -52,9 +52,7 @@ const getAllImagesInVault = (app: App): TFile[] => {
 // Check if image in the list
 const imageInTheFileList = (image: TFile, list: TFile[]) => {
     for(let i=0; i < list.length; i++){
-        if(list[i] === image){
-            return true;
-        }
+        if(list[i] === image) return true;
     }
     return false;
 }
@@ -95,8 +93,7 @@ const clearUnusedImages = (app: App) => {
         }else{
             new Notice('All images are used. Nothing was deleted.')
         }
-        
-    }, 2000)
+    }, 3000)
 }
 
 export { clearUnusedImages };
