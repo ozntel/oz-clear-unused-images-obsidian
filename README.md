@@ -17,6 +17,10 @@ In case all images are used, you will see a communication as below:
 
 <img src="./images/nothing-deleted.png">
 
+If you want to check which images are deleted, you can go to console and see the details:
+
+<img src="./images/deleted-images.png">
+
 **Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp
 
 ### Support
