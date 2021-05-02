@@ -1,6 +1,8 @@
 # Obsidian Plugin for Clearing Unused Images
 
-This plugin helps you to delete the images you are not using in your notes anymore. It will simply scan all of your markdown documents, find image links you are currently using and compare with all image files you have available in your vault. In case any image is not referenced, it will be deleted.
+This plugin helps you to delete the images you are not using in your markdown notes anymore. 
+
+It will simply scan all of your markdown documents, find image links you are currently using both wikilinks `![[ ]]` and markdown format `![ ]( )` and compare with all image files you have available in your vault. In case any image is not referenced, it will be deleted.
 
 ### How to use
 
