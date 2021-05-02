@@ -6,8 +6,9 @@ It will simply scan all of your markdown documents, find image links you are cur
 
 ### How to use
 
-1. Simply Open Command Pallette
-2. Run "Clear Unused Images" after your activate the plugin.
+1. Activate the plugin from Community Plugins
+1. Simply Open Command Pallette (Using `Ctrl/Cmd + P` or from Ribbon)
+2. Run "Clear Unused Images" and that's all.
 
 <img src="./images/Clear-Command.png">
 
