@@ -1,11 +1,11 @@
 import { App, Notice, TFile } from 'obsidian';
 
 // Regex for [[ ]] format
-const image_line_regex_1 = /!\[\[.*(jpe?g|png|gif|svg).*\]\]/g;
-const file_name_regex_1 = /(?<=\[\[).*(jpe?g|png|gif|svg)/;
+const image_line_regex_1 = /!\[\[.*(jpe?g|png|gif|svg|ti?f|bmp).*\]\]/g;
+const file_name_regex_1 = /(?<=\[\[).*(jpe?g|png|gif|svg|ti?f|bmp)/;
 // Regex for ![ ]( ) format
-const image_line_regex_2 = /!\[(^$|.*)\]\(.*(jpe?g|png|gif|svg)\)/g;
-const file_name_regex_2 = /(?<=\().*(jpe?g|png|gif|svg)/;
+const image_line_regex_2 = /!\[(^$|.*)\]\(.*(jpe?g|png|gif|svg|ti?f|bmp)\)/g;
+const file_name_regex_2 = /(?<=\().*(jpe?g|png|gif|svg|ti?f|bmp)/;
 
 // Getting Images from Lines matching Image Regexes
 const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
@@ -39,7 +39,7 @@ const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
 const getAllImagesInVault = (app: App): TFile[] => {
     let allFiles : TFile[] = app.vault.getFiles();
     let images : TFile[] = [];
-    const imageRegex = /.*(jpe?g|png|gif|svg)/
+    const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/
     for(let i=0; i < allFiles.length; i++){
         if(allFiles[i].path.match(imageRegex)){
             images.push(allFiles[i]);
@@ -60,7 +60,7 @@ const imageInTheFileList = (image: TFile, list: TFile[]) => {
 const deleteFilesInTheList = (app: App, fileList: TFile[]) => {
     fileList.forEach( file => {
         app.vault.delete(file);
-        console.log(file.path + ' - deleted');
+        console.log('Deleted: ' + file.path);
     })
 }
 

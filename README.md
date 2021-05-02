@@ -17,7 +17,7 @@ In case all images are used, you will see a communication as below:
 
 <img src="./images/nothing-deleted.png">
 
-**Scanned Image Extensions** : jpeg, png, gif, svg
+**Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp
 
 ### Support
 
