@@ -7,7 +7,6 @@ const file_name_regex_1 = /(?<=\[\[).*(jpe?g|png|gif|svg)/;
 const image_line_regex_2 = /!\[(^$|.*)\]\(.*(jpe?g|png|gif|svg)\)/g;
 const file_name_regex_2 = /(?<=\().*(jpe?g|png|gif|svg)/;
 
-
 // Getting Images from Lines matching Image Regexes
 const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
     var content = await app.vault.read(file);
@@ -20,7 +19,7 @@ const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
     if(matches_1){
         matches_1.forEach( match => {
             file_name_match = match.match(file_name_regex_1);
-            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path)
+            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path);
             if(image != null) images.push(image);
         });
     }
@@ -28,7 +27,7 @@ const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
     if(matches_2){
         matches_2.forEach( match => {
             file_name_match = match.match(file_name_regex_2);
-            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path)
+            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path);
             if(image != null) images.push(image);
         });
     }
@@ -61,39 +60,40 @@ const imageInTheFileList = (image: TFile, list: TFile[]) => {
 const deleteFilesInTheList = (app: App, fileList: TFile[]) => {
     fileList.forEach( file => {
         app.vault.delete(file);
+        console.log(file.path + ' - deleted');
     })
 }
 
 // Compare Used Images with all images and return unused ones
-const clearUnusedImages = (app: App) => {
+const clearUnusedImages = async (app: App) => {
     var all_images_in_vault: TFile[] = getAllImagesInVault(app);
-    var unused_images : TFile[] = []
+    var unused_images : TFile[] = [];
     var markdown_files_in_vault = app.vault.getMarkdownFiles();
     var used_images: TFile[] = [];
 
-    // Get Path of Used Imags in the Vault
-    markdown_files_in_vault.forEach( async file => {
-        var new_images = await getImageFilesFromMarkdown(app, file);
-        new_images.forEach( img => {
-            used_images.push(img);
+    // Get Used Images in All Markdown Files
+    await Promise.all(
+        markdown_files_in_vault.map( async file => {
+            var new_images = await getImageFilesFromMarkdown(app, file);
+            new_images.forEach( img => used_images.push(img) );
         })
-    })
+    )
+    
+    // Compare All Images vs Used Images
+    all_images_in_vault.forEach( img => {
+        if(!imageInTheFileList(img, used_images)) unused_images.push(img)
+    });
 
-    setTimeout( () => {
-        all_images_in_vault.forEach( img => {
-            if(!imageInTheFileList(img, used_images)){
-                unused_images.push(img);
-            }
-        });
-        var len = unused_images.length;
-        if(len > 0){
-            console.log('Deleting ' + len + ' images.')
-            deleteFilesInTheList(app, unused_images);
-            new Notice(len + ' image(s) deleted.')
-        }else{
-            new Notice('All images are used. Nothing was deleted.')
-        }
-    }, 3000)
+    var len = unused_images.length;
+    
+    if(len > 0){
+        console.log('[+] Deleting ' + len + ' images.');
+        deleteFilesInTheList(app, unused_images);
+        new Notice(len + ' image(s) in total deleted.');
+        console.log('[+] Delete completed.');
+    }else{
+        new Notice('All images are used. Nothing was deleted.');
+    }
 }
 
 export { clearUnusedImages };
