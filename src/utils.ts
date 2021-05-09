@@ -1,6 +1,6 @@
 import { App, Notice, TFile } from 'obsidian';
 
-const image_regex = /.*(jpe?g|png|gif|svg|ti?f|bmp)/
+const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/;
 
 // Alternative Getting Images from the Markdown File
 const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
@@ -9,7 +9,7 @@ const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
     var metaData = app.metadataCache.getFileCache(file);
     if(metaData.embeds){
         for(let embed of metaData.embeds){
-            var image_match = embed.link.match(image_regex)
+            var image_match = embed.link.match(imageRegex);
             if(image_match){
                 image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(image_match[0]), file.path);
                 if(image != null) images.push(image);
@@ -23,7 +23,6 @@ const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
 const getAllImagesInVault = (app: App): TFile[] => {
     let allFiles : TFile[] = app.vault.getFiles();
     let images : TFile[] = [];
-    const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/
     for(let i=0; i < allFiles.length; i++){
         if(allFiles[i].path.match(imageRegex)){
             images.push(allFiles[i]);
@@ -49,7 +48,7 @@ const deleteFilesInTheList = (app: App, fileList: TFile[]) => {
 }
 
 // Compare Used Images with all images and return unused ones
-const clearUnusedImages = async (app: App) => {
+export const clearUnusedImages = async (app: App) => {
     var all_images_in_vault: TFile[] = getAllImagesInVault(app);
     var unused_images : TFile[] = [];
     var markdown_files_in_vault = app.vault.getMarkdownFiles();
@@ -79,5 +78,3 @@ const clearUnusedImages = async (app: App) => {
         new Notice('All images are used. Nothing was deleted.');
     }
 }
-
-export { clearUnusedImages };
