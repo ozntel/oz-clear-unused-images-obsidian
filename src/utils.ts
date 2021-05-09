@@ -1,37 +1,21 @@
 import { App, Notice, TFile } from 'obsidian';
 
-// Regex for [[ ]] format
-const image_line_regex_1 = /!\[\[.*(jpe?g|png|gif|svg|ti?f|bmp).*\]\]/g;
-const file_name_regex_1 = /(?<=\[\[).*(jpe?g|png|gif|svg|ti?f|bmp)/;
-// Regex for ![ ]( ) format
-const image_line_regex_2 = /!\[(^$|.*)\]\(.*(jpe?g|png|gif|svg|ti?f|bmp)\)/g;
-const file_name_regex_2 = /(?<=\().*(jpe?g|png|gif|svg|ti?f|bmp)/;
+const image_regex = /.*(jpe?g|png|gif|svg|ti?f|bmp)/
 
-// Getting Images from Lines matching Image Regexes
+// Alternative Getting Images from the Markdown File
 const getImageFilesFromMarkdown = async (app: App, file: TFile) => {
-    var content = await app.vault.read(file);
     var images: TFile[] = [];
-    var matches_1 = content.match(image_line_regex_1);
-    var matches_2 = content.match(image_line_regex_2);
-    var image;
-    var file_name_match;
-    
-    if(matches_1){
-        matches_1.forEach( match => {
-            file_name_match = match.match(file_name_regex_1);
-            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path);
-            if(image != null) images.push(image);
-        });
+    var image: TFile;
+    var metaData = app.metadataCache.getFileCache(file);
+    if(metaData.embeds){
+        for(let embed of metaData.embeds){
+            var image_match = embed.link.match(image_regex)
+            if(image_match){
+                image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(image_match[0]), file.path);
+                if(image != null) images.push(image);
+            }
+        }
     }
-    
-    if(matches_2){
-        matches_2.forEach( match => {
-            file_name_match = match.match(file_name_regex_2);
-            image = app.metadataCache.getFirstLinkpathDest(decodeURIComponent(file_name_match[0]), file.path);
-            if(image != null) images.push(image);
-        });
-    }
-
     return await Promise.all(images);
 }
 
