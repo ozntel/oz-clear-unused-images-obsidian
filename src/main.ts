@@ -29,7 +29,7 @@ export default class OzanClearImages extends Plugin {
 
 		// Compare All Images vs Used Images
 		all_images_in_vault.forEach( img => {
-			if(!this.imageInTheFileList(img, used_images_set)) unused_images.push(img)
+			if(!used_images_set.has(img.path)) unused_images.push(img)
 		});
 
 		var len = unused_images.length;
@@ -42,11 +42,6 @@ export default class OzanClearImages extends Plugin {
 		}else{
 			new Notice('All images are used. Nothing was deleted.');
 		}
-	}
-
-	// Check if image in the list
-	imageInTheFileList = (image: TFile, set: Set<string>) => {
-		return set.has(image.path)
 	}
 
 	// Clear Images From the Provided List
