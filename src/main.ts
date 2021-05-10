@@ -36,7 +36,7 @@ export default class OzanClearImages extends Plugin {
 
 		if (len > 0) {
 			console.log('[+] Deleting ' + len + ' images.');
-			this.deleteFilesInTheList(unused_images);
+			await this.deleteFilesInTheList(unused_images);
 			new Notice(len + ' image(s) in total deleted.');
 			console.log('[+] Delete completed.');
 		} else {
