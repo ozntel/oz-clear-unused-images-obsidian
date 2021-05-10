@@ -26,7 +26,6 @@ export default class OzanClearImages extends Plugin {
 
 		// Get Used Images in All Markdown Files
 		used_images_set = this.getImagePathSetForVault();
-		console.log(used_images_set);
 
 		// Compare All Images vs Used Images
 		all_images_in_vault.forEach( img => {
