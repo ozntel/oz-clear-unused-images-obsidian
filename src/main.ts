@@ -16,6 +16,7 @@ export default class OzanClearImages extends Plugin {
 	}
 
 	imageRegex = /.*(jpe?g|png|gif|svg|bmp)/;
+	imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp']);
 
 	// Compare Used Images with all images and return unused ones
 	clearUnusedImages = async () => {
@@ -23,7 +24,7 @@ export default class OzanClearImages extends Plugin {
 		var unused_images : TFile[] = [];
 		var markdown_files_in_vault = this.app.vault.getMarkdownFiles();
 		var used_images_set: Set<string> = new Set();
-		
+
 		// Get Used Images in All Markdown Files
 		await Promise.all(
 			markdown_files_in_vault.map( async file => {
@@ -67,7 +68,7 @@ export default class OzanClearImages extends Plugin {
 		let allFiles : TFile[] = this.app.vault.getFiles();
 		let images : TFile[] = [];
 		for(let i=0; i < allFiles.length; i++){
-			if(allFiles[i].path.match(this.imageRegex)){
+			if(this.imageExtensions.has(allFiles[i].extension)){
 				images.push(allFiles[i]);
 			}
 		}
