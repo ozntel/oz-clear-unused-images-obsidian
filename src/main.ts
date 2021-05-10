@@ -23,7 +23,7 @@ export default class OzanClearImages extends Plugin {
 		var unused_images : TFile[] = [];
 		var markdown_files_in_vault = this.app.vault.getMarkdownFiles();
 		var used_images_set: Set<string> = new Set();
-console.log("workss")
+		
 		// Get Used Images in All Markdown Files
 		await Promise.all(
 			markdown_files_in_vault.map( async file => {
