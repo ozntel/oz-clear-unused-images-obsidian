@@ -22,17 +22,12 @@ export default class OzanClearImages extends Plugin {
 	clearUnusedImages = async () => {
 		var all_images_in_vault: TFile[] = this.getAllImagesInVault();
 		var unused_images : TFile[] = [];
-		var markdown_files_in_vault = this.app.vault.getMarkdownFiles();
-		var used_images_set: Set<string> = new Set();
+		var used_images_set: Set<string>;
 
 		// Get Used Images in All Markdown Files
-		await Promise.all(
-			markdown_files_in_vault.map( async file => {
-				var new_images = await this.getImageFilesFromMarkdown(file);
-				new_images.forEach( img => used_images_set.add(img.path) );
-			})
-		)
-		
+		used_images_set = this.getImagePathSetForVault();
+		console.log(used_images_set);
+
 		// Compare All Images vs Used Images
 		all_images_in_vault.forEach( img => {
 			if(!this.imageInTheFileList(img, used_images_set)) unused_images.push(img)
@@ -75,23 +70,19 @@ export default class OzanClearImages extends Plugin {
 		return images;
 	}
 
-	// Alternative Getting Images from the Markdown File
-	getImageFilesFromMarkdown = async (file: TFile) => {
-		var images: TFile[] = [];
-		var image: TFile;
-		var resolvedLinks = this.app.metadataCache.resolvedLinks[file.path];
-		
+	// New Method for Getting All Used Images
+	getImagePathSetForVault = (): Set<string> => {
+		var images_set: Set<string> = new Set();
+		var resolvedLinks = this.app.metadataCache.resolvedLinks;
 		if(resolvedLinks){
-			for(const [key, value] of Object.entries(resolvedLinks)){
-				var image_match = key.match(this.imageRegex);
-				if(image_match){
-					image = this.app.metadataCache.getFirstLinkpathDest(decodeURIComponent(image_match[0]), file.path);
-					if(image != null) images.push(image);
+			for(const [md_file, links] of Object.entries(resolvedLinks)){
+				for(const [file_path, nr] of Object.entries(resolvedLinks[md_file])){
+					var image_match = file_path.match(this.imageRegex);
+					if(image_match) images_set.add(image_match[0]);
 				}
 			}
 		}
-		
-		return await Promise.all(images);
+		return images_set
 	}
 
 }
