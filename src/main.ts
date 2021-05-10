@@ -22,19 +22,19 @@ export default class OzanClearImages extends Plugin {
 		var all_images_in_vault: TFile[] = this.getAllImagesInVault();
 		var unused_images : TFile[] = [];
 		var markdown_files_in_vault = this.app.vault.getMarkdownFiles();
-		var used_images: TFile[] = [];
-
+		var used_images_set: Set<string> = new Set();
+console.log("workss")
 		// Get Used Images in All Markdown Files
 		await Promise.all(
 			markdown_files_in_vault.map( async file => {
 				var new_images = await this.getImageFilesFromMarkdown(file);
-				new_images.forEach( img => used_images.push(img) );
+				new_images.forEach( img => used_images_set.add(img.path) );
 			})
 		)
 		
 		// Compare All Images vs Used Images
 		all_images_in_vault.forEach( img => {
-			if(!this.imageInTheFileList(img, used_images)) unused_images.push(img)
+			if(!this.imageInTheFileList(img, used_images_set)) unused_images.push(img)
 		});
 
 		var len = unused_images.length;
@@ -50,11 +50,8 @@ export default class OzanClearImages extends Plugin {
 	}
 
 	// Check if image in the list
-	imageInTheFileList = (image: TFile, list: TFile[]) => {
-		for(let i=0; i < list.length; i++){
-			if(list[i] === image) return true;
-		}
-		return false;
+	imageInTheFileList = (image: TFile, set: Set<string>) => {
+		return set.has(image.path)
 	}
 
 	// Clear Images From the Provided List
