@@ -28,6 +28,9 @@ export default class OzanClearImages extends Plugin {
 			if (this.settings.autoClearOnBoot) {
 				setTimeout(() => this.clearUnusedImages(), 3000)
 			}
+			if (this.settings.autoClearInterval > 0) {
+				this.startAutoClean(this.settings.autoClearInterval)
+			}
 		})
 	}
 
