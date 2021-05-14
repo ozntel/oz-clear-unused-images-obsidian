@@ -10,6 +10,8 @@ In case any of these image files are not referenced in any document of the vault
 
 Please make sure that you select the destination for the deleted images under "Clear Unused Images Settings" tab. You have 3 options:
 
+<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/delete-destination.png?raw=true">
+
 1. **Move to Obsidian Trash** - Files are going to be moved to the `.trash` under the Obsidian Vault.
 
 2. **Move to System Trash** - Files are going to be moved to the Operating System trash.
