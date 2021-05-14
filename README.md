@@ -6,7 +6,7 @@ The plugin simply gets all of your image links from all the markdown documents a
 
 In case any of these image files are not referenced in any document of the vault, they will be automatically deleted.
 
-### Settings
+## Settings
 
 Please make sure that you select the destination for the deleted images under "Clear Unused Images Settings" tab. You have 3 options:
 
@@ -18,7 +18,7 @@ Please make sure that you select the destination for the deleted images under "C
 
 3. **Permanently Delete** - Files are going to be destroyed permanently. You won't be able to revert back.
 
-### How to use
+## How to use
 
 1. Activate the plugin from Community Plugins
 
@@ -50,6 +50,4 @@ If you want to check which images are deleted, you can go to console and see the
 
 ### Support
 
-<a href="https://www.buymeacoffee.com/ozante">
-    <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Buy-me-coffee.svg" width="20%" height="auto" />
-</a>
+<a href="https://www.buymeacoffee.com/ozante" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
