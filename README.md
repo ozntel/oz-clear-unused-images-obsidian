@@ -50,4 +50,4 @@ If you want to check which images are deleted, you can go to console and see the
 
 ### Support
 
-<a href="https://www.buymeacoffee.com/ozante" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="width: 20% !important; height: auto" ></a>
+<a href="https://www.buymeacoffee.com/ozante" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="20%" height="auto"></a>
