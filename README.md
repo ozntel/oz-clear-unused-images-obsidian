@@ -30,13 +30,17 @@ You can exclude folders, from which you don't want images to be removed during t
 
 1. Activate the plugin from Community Plugins
 
-2. Simply Open Command Palette (Using `Ctrl/Cmd + P` or from Ribbon)
+2. You can either:
 
-3. Run "Clear Unused Images" and that's all.
+    - Activate the Ribbon Icon from plugin settings and click Icon from Left Ribbon for running the clean up:
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
+          <img src="./images/ribbon-icon-settings.png">
 
-You will see a notification of how many images are deleted from your vault:
+    - Or use Ribbon Icon or Open Command Palette (Using `Ctrl/Cmd + P` or from Ribbon) Run "Clear Unused Images".
+
+          <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
+
+3. You will see a notification of how many images are deleted from your vault:
 
 <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/images-deleted.png">
 
