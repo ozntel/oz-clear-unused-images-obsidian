@@ -34,11 +34,11 @@ You can exclude folders, from which you don't want images to be removed during t
 
     - Activate the Ribbon Icon from plugin settings and click Icon from Left Ribbon for running the clean up:
 
-          <img src="./images/ribbon-icon-settings.png">
+      <img src="https://user-images.githubusercontent.com/55187568/118400231-0ceeed80-b661-11eb-9b07-7e22fab02694.png">
 
     - Or use Ribbon Icon or Open Command Palette (Using `Ctrl/Cmd + P` or from Ribbon) Run "Clear Unused Images".
 
-          <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
+      <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
 
 3. You will see a notification of how many images are deleted from your vault:
 
