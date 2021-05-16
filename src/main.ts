@@ -1,18 +1,22 @@
-import { Plugin, TFile, Notice, PluginSettingTab, App, Setting } from 'obsidian';
+import { Plugin, TFile, Notice } from 'obsidian';
+import { OzanClearImagesSettingsTab } from './settings';
 
 interface OzanClearImagesSettings {
 	deleteOption: string;
 	excludedFolders: string;
+	ribbonIcon: boolean;
 }
 
 const DEFAULT_SETTINGS: OzanClearImagesSettings = {
 	deleteOption: '.trash',
-	excludedFolders: ''
+	excludedFolders: '',
+	ribbonIcon: false,
 }
 
 export default class OzanClearImages extends Plugin {
 
 	settings: OzanClearImagesSettings;
+	ribbonIconEl: HTMLElement | undefined = undefined;
 
 	async onload() {
 		console.log("Loading oz-clear-unused-images plugin")
@@ -23,6 +27,7 @@ export default class OzanClearImages extends Plugin {
 			name: 'Clear Unused Images in Vault',
 			callback: () => this.clearUnusedImages()
 		});
+		this.refreshIconRibbon();
 	}
 
 	onunload() {
@@ -35,6 +40,15 @@ export default class OzanClearImages extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	refreshIconRibbon = () => {
+		this.ribbonIconEl?.remove();
+		if (this.settings.ribbonIcon) {
+			this.ribbonIconEl = this.addRibbonIcon('image-file', 'Clear Unused Images', (event): void => {
+				this.clearUnusedImages();
+			})
+		}
 	}
 
 	imageRegex = /.*(jpe?g|png|gif|svg|bmp)/;
@@ -144,48 +158,5 @@ export default class OzanClearImages extends Plugin {
 			}
 		}
 		return images_set
-	}
-
-}
-
-class OzanClearImagesSettingsTab extends PluginSettingTab {
-
-	plugin: OzanClearImages;
-
-	constructor(app: App, plugin: OzanClearImages) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-
-		let { containerEl } = this;
-		containerEl.empty();
-		containerEl.createEl("h2", { text: "Clear Images Settings" });
-
-		new Setting(containerEl)
-			.setName('Deleted Image Destination')
-			.setDesc('Select where you want images to be moved once they are deleted')
-			.addDropdown((dropdown) => {
-				dropdown.addOption('permanent', 'Delete Permanently');
-				dropdown.addOption('.trash', 'Move to Obsidian Trash');
-				dropdown.addOption('system-trash', 'Move to System Trash');
-				dropdown.setValue(this.plugin.settings.deleteOption);
-				dropdown.onChange((option) => {
-					this.plugin.settings.deleteOption = option;
-					this.plugin.saveSettings();
-				})
-			})
-
-		new Setting(containerEl)
-			.setName('Excluded Folders')
-			.setDesc('Provide the folder names (Case Sensitive) divided by comma ( , ) to be excluded from clearing')
-			.addText((text) => text
-				.setValue(this.plugin.settings.excludedFolders)
-				.onChange((value) => {
-					this.plugin.settings.excludedFolders = value;
-					this.plugin.saveSettings();
-				})
-			)
 	}
 }
