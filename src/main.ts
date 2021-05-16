@@ -2,10 +2,12 @@ import { Plugin, TFile, Notice, PluginSettingTab, App, Setting } from 'obsidian'
 
 interface OzanClearImagesSettings {
 	deleteOption: string;
+	excludedFolders: string;
 }
 
 const DEFAULT_SETTINGS: OzanClearImagesSettings = {
-	deleteOption: '.trash'
+	deleteOption: '.trash',
+	excludedFolders: ''
 }
 
 export default class OzanClearImages extends Plugin {
@@ -43,10 +45,11 @@ export default class OzanClearImages extends Plugin {
 		var unused_images: TFile[] = this.getUnusedImages()
 		var len = unused_images.length;
 		if (len > 0) {
-			console.log('[+] Deleting ' + len + ' images.');
-			await this.deleteFilesInTheList(unused_images);
-			new Notice(len + ' image(s) in total deleted.');
-			console.log('[+] Delete completed.');
+			console.log('[+] Clearing started.');
+			this.deleteFilesInTheList(unused_images).then((nr) => {
+				new Notice(nr + ' image(s) in total deleted.');
+				console.log('[+] Clearing completed.');
+			});
 		} else {
 			new Notice('All images are used. Nothing was deleted.');
 		}
@@ -70,19 +73,49 @@ export default class OzanClearImages extends Plugin {
 	}
 
 	// Clear Images From the Provided List
-	deleteFilesInTheList = async (fileList: TFile[]) => {
-		var deleteOption = this.settings.deleteOption
+	deleteFilesInTheList = async (fileList: TFile[]): Promise<number> => {
+		var deleteOption = this.settings.deleteOption;
+		var deletedImages = 0;
 		for (let file of fileList) {
-			if (deleteOption === '.trash') {
-				await this.app.vault.trash(file, false);
-				console.log('Moved to Obsidian Trash: ' + file.path);
-			} else if (deleteOption === 'system-trash') {
-				await this.app.vault.trash(file, true);
-				console.log('Moved to System Trash: ' + file.path);
-			} else if (deleteOption === 'permanent') {
-				await this.app.vault.delete(file);
-				console.log('Deleted: ' + file.path);
+			if (this.file_is_in_excluded_folder(file)) {
+				console.log('File not referenced but excluded: ' + file.path)
+			} else {
+				if (deleteOption === '.trash') {
+					await this.app.vault.trash(file, false);
+					console.log('Moved to Obsidian Trash: ' + file.path);
+				} else if (deleteOption === 'system-trash') {
+					await this.app.vault.trash(file, true);
+					console.log('Moved to System Trash: ' + file.path);
+				} else if (deleteOption === 'permanent') {
+					await this.app.vault.delete(file);
+					console.log('Deleted: ' + file.path);
+				}
+				deletedImages++;
 			}
+		}
+		return deletedImages;
+	}
+
+	// Check if File is Under Excluded Folders
+	file_is_in_excluded_folder = (file: TFile): boolean => {
+		var excludedFoldersSettings = this.settings.excludedFolders;
+		if (excludedFoldersSettings === '') {
+			return false
+		} else {
+			var excludedFolders = new Set(excludedFoldersSettings.split(",").map(folderName => {
+				return folderName.trim()
+			}));
+			var filePathParts = file.path.split("/").map((txt) => {
+				if (txt != '..') return txt
+			})
+			// Check only if image in a folder
+			if (filePathParts.length > 1) {
+				// Check only the final folder name
+				if (excludedFolders.has(filePathParts[filePathParts.length - 2])) {
+					return true
+				}
+			}
+			return false;
 		}
 	}
 
@@ -144,5 +177,15 @@ class OzanClearImagesSettingsTab extends PluginSettingTab {
 				})
 			})
 
+		new Setting(containerEl)
+			.setName('Excluded Folders')
+			.setDesc('Provide the folder names (Case Sensitive) divided by comma ( , ) to be excluded from clearing')
+			.addText((text) => text
+				.setValue(this.plugin.settings.excludedFolders)
+				.onChange((value) => {
+					this.plugin.settings.excludedFolders = value;
+					this.plugin.saveSettings();
+				})
+			)
 	}
 }
