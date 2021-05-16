@@ -8,6 +8,8 @@ In case any of these image files are not referenced in any document of the vault
 
 ## Settings
 
+### Deleted Image Destination
+
 Please make sure that you select the destination for the deleted images under "Clear Unused Images Settings" tab. You have 3 options:
 
 <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/delete-destination.png?raw=true">
@@ -16,7 +18,13 @@ Please make sure that you select the destination for the deleted images under "C
 
 2. **Move to System Trash** - Files are going to be moved to the Operating System trash.
 
-3. **Permanently Delete** - Files are going to be destroyed permanently. You won't be able to revert back.
+3. **Permanently Delete** - Files are going to be destroyed permanently. You won't beable to revert back.
+
+### Excluded Folders
+
+You can exclude folders, from which you don't want images to be removed during the scan. In case there are multiple folders to be excluded, you can divide them by comma:
+
+<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/excluded-folders.png?raw=true">
 
 ## How to use
 
@@ -45,6 +53,7 @@ If you want to check which images are deleted, you can go to console and see the
 ## Planned Features
 
 -   [x] Creating settings for users to select the destination of the deleted files
+-   [x] Excluded folders settings for the scan
 -   [ ] Images to be cleaned during load of the vault if users chooses.
 -   [ ] Images to be cleaned every X minutes depending on user's choice
 
