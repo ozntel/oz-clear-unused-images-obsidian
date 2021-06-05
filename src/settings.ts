@@ -1,6 +1,18 @@
 import OzanClearImages from './main';
 import { PluginSettingTab, Setting, App } from 'obsidian';
 
+export interface OzanClearImagesSettings {
+    deleteOption: string;
+    excludedFolders: string;
+    ribbonIcon: boolean;
+}
+
+export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
+    deleteOption: '.trash',
+    excludedFolders: '',
+    ribbonIcon: false,
+}
+
 export class OzanClearImagesSettingsTab extends PluginSettingTab {
 
     plugin: OzanClearImages;
