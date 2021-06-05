@@ -81,22 +81,31 @@ export class DeleteUtils {
     // Check if File is Under Excluded Folders
     static file_is_in_excluded_folder = (file: TFile, plugin: OzanClearImages): boolean => {
         var excludedFoldersSettings = plugin.settings.excludedFolders;
+        var excludeSubfolders = plugin.settings.excludeSubfolders;
         if (excludedFoldersSettings === '') {
             return false
         } else {
-            var excludedFolders = new Set(excludedFoldersSettings.split(",").map(folderName => {
-                return folderName.trim()
+
+            // Get All Excluded Folder Paths
+            var excludedFolderPaths = new Set(excludedFoldersSettings.split(",").map(folderPath => {
+                return folderPath.trim()
             }));
-            var filePathParts = file.path.split("/").map((txt) => {
-                if (txt != '..') return txt
-            })
-            // Check only if image in a folder
-            if (filePathParts.length > 1) {
-                // Check only the final folder name
-                if (excludedFolders.has(filePathParts[filePathParts.length - 2])) {
-                    return true
+
+            if (excludeSubfolders) {
+                // If subfolders included, check if any provided path partially match
+                for (let exludedFolderPath of excludedFolderPaths) {
+                    var pathRegex = new RegExp(exludedFolderPath + '.*')
+                    if (file.parent.path.match(pathRegex)) {
+                        return true;
+                    }
+                }
+            } else {
+                // Full path of parent should match if subfolders are not included
+                if (excludedFolderPaths.has(file.parent.path)) {
+                    return true;
                 }
             }
+
             return false;
         }
     }
