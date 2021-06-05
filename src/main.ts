@@ -10,6 +10,13 @@ export default class OzanClearImages extends Plugin {
 
 	async onload() {
 		console.log("Loading oz-clear-unused-images plugin")
+		// Temporary Notice for Existing Users
+		new Notice(`Clear Unused Images Plugin
+**IMPORTANT CHANGE FOR EXISTING USERS**
+Please make sure that you go to your settings and change provided paths for excluded folders to Full Path.
+This notice will be removed in a few days.
+Click on notice to remove.`,
+			9999999)
 		this.addSettingTab(new OzanClearImagesSettingsTab(this.app, this));
 		await this.loadSettings();
 		this.addCommand({

@@ -58,7 +58,7 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
 
         new Setting(containerEl)
             .setName('Excluded Folder Full Paths')
-            .setDesc(`Provide the full path of the folder names (Case Sensitive) divided by comma (,) to be excluded from clearing. 
+            .setDesc(`Provide the FULL path of the folder names (Case Sensitive) divided by comma (,) to be excluded from clearing. 
 					i.e. For images under Personal/Files/Zodiac -> Personal/Files/Zodiac should be used for exclusion`)
             .addTextArea((text) => text
                 .setValue(this.plugin.settings.excludedFolders)
@@ -70,7 +70,7 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
 
         new Setting(containerEl)
             .setName('Exclude Subfolders')
-            .setDesc('Turn on this option if you want to also exclude subfolders of the folder paths provided above')
+            .setDesc('Turn on this option if you want to also exclude all subfolders of the folder paths provided above.')
             .addToggle((toggle) => toggle
                 .setValue(this.plugin.settings.excludeSubfolders)
                 .onChange((value) => {
