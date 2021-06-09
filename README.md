@@ -38,11 +38,11 @@ You can now exclude all subfolders under the folder paths provided above:
 
     - Activate the Ribbon Icon from plugin settings and click Icon from Left Ribbon for running the clean up:
 
-          <img src="https://user-images.githubusercontent.com/55187568/118400231-0ceeed80-b661-11eb-9b07-7e22fab02694.png">
+    <img src="https://user-images.githubusercontent.com/55187568/118400231-0ceeed80-b661-11eb-9b07-7e22fab02694.png">
 
     - Or use Ribbon Icon or Open Command Palette (Using `Ctrl/Cmd + P` or from Ribbon) Run "Clear Unused Images".
 
-          <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
+    <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
 
 3. You will see a notification of how many images are deleted from your vault:
 
@@ -67,4 +67,4 @@ If you want to check which images are deleted, you can go to console and see the
 
 ### Support
 
-<a href="https://www.buymeacoffee.com/ozante" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="20%" height="auto"></a>
+<a href="https://www.buymeacoffee.com/ozante"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=ozante&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
