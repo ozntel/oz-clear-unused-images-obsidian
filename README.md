@@ -65,7 +65,7 @@ If you want to check which images are deleted, you can go to console and see the
 -   [ ] Images to be cleaned during load of the vault if users chooses.
 -   [ ] Images to be cleaned every X minutes depending on user's choice
 
-### Support
+## Support
 
 If you are enjoying the plugin then you can support my work and enthusiasm by buying me a coffee:
 
