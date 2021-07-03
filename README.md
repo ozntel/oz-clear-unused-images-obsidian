@@ -67,4 +67,8 @@ If you want to check which images are deleted, you can go to console and see the
 
 ### Support
 
-<a href="https://www.buymeacoffee.com/ozante"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=ozante&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
+If you are enjoying the plugin then you can support my work and enthusiasm by buying me a coffee:
+
+<a href='https://ko-fi.com/L3L356V6Q' target='_blank'>
+    <img height='48' style='border:0px;height:48px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+</a>
