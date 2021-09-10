@@ -42,11 +42,11 @@ export default class OzanClearImages extends Plugin {
 
 	// Compare Used Images with all images and return unused ones
 	clearUnusedImages = async () => {
-		var unused_images: TFile[] = ImageUtils.getUnusedImages(this.app);
-		var len = unused_images.length;
+		var unusedImages: TFile[] = ImageUtils.getUnusedImages(this.app);
+		var len = unusedImages.length;
 		if (len > 0) {
 			console.log('[+] Clearing started.');
-			DeleteUtils.deleteFilesInTheList(unused_images, this, this.app).then((nr) => {
+			DeleteUtils.deleteFilesInTheList(unusedImages, this, this.app).then((nr) => {
 				new Notice(nr + ' image(s) in total deleted.');
 				console.log('[+] Clearing completed.');
 			});

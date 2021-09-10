@@ -7,19 +7,19 @@ export class ImageUtils {
 
 	// Create the List of Unused Images
 	static getUnusedImages = (app: App) => {
-		var all_images_in_vault: TFile[] = ImageUtils.getAllImagesInVault(app);
-		var unused_images: TFile[] = [];
-		var used_images_set: Set<string>;
+		var allImagesInVault: TFile[] = ImageUtils.getAllImagesInVault(app);
+		var unusedImages: TFile[] = [];
+		var usedImagesSet: Set<string>;
 
 		// Get Used Images in All Markdown Files
-		used_images_set = ImageUtils.getImagePathSetForVault(app);
+		usedImagesSet = ImageUtils.getImagePathSetForVault(app);
 
 		// Compare All Images vs Used Images
-		all_images_in_vault.forEach((img) => {
-			if (!used_images_set.has(img.path)) unused_images.push(img);
+		allImagesInVault.forEach((img) => {
+			if (!usedImagesSet.has(img.path)) unusedImages.push(img);
 		});
 
-		return unused_images;
+		return unusedImages;
 	};
 
 	// Getting all available images saved in vault
@@ -36,13 +36,13 @@ export class ImageUtils {
 
 	// New Method for Getting All Used Images
 	static getImagePathSetForVault = (app: App): Set<string> => {
-		var images_set: Set<string> = new Set();
+		var imagesSet: Set<string> = new Set();
 		var resolvedLinks = app.metadataCache.resolvedLinks;
 		if (resolvedLinks) {
-			for (const [md_file, links] of Object.entries(resolvedLinks)) {
-				for (const [file_path, nr] of Object.entries(resolvedLinks[md_file])) {
-					var image_match = file_path.match(ImageUtils.imageRegex);
-					if (image_match) images_set.add(image_match[0]);
+			for (const [mdFile, links] of Object.entries(resolvedLinks)) {
+				for (const [filePath, nr] of Object.entries(resolvedLinks[mdFile])) {
+					var imageMatch = filePath.match(ImageUtils.imageRegex);
+					if (imageMatch) imagesSet.add(imageMatch[0]);
 				}
 			}
 		}
@@ -54,12 +54,12 @@ export class ImageUtils {
 				let frontmatter = fileCache.frontmatter;
 				for (let k of Object.keys(frontmatter)) {
 					if (typeof frontmatter[k] === 'string' && ImageUtils.pathIsAnImage(frontmatter[k])) {
-						images_set.add(frontmatter[k]);
+						imagesSet.add(frontmatter[k]);
 					}
 				}
 			}
 		});
-		return images_set;
+		return imagesSet;
 	};
 
 	static pathIsAnImage = (path: string) => {
@@ -74,7 +74,7 @@ export class DeleteUtils {
 		var deleteOption = plugin.settings.deleteOption;
 		var deletedImages = 0;
 		for (let file of fileList) {
-			if (DeleteUtils.file_is_in_excluded_folder(file, plugin)) {
+			if (DeleteUtils.fileIsInExcludedFolder(file, plugin)) {
 				console.log('File not referenced but excluded: ' + file.path);
 			} else {
 				if (deleteOption === '.trash') {
@@ -94,7 +94,7 @@ export class DeleteUtils {
 	};
 
 	// Check if File is Under Excluded Folders
-	static file_is_in_excluded_folder = (file: TFile, plugin: OzanClearImages): boolean => {
+	static fileIsInExcludedFolder = (file: TFile, plugin: OzanClearImages): boolean => {
 		var excludedFoldersSettings = plugin.settings.excludedFolders;
 		var excludeSubfolders = plugin.settings.excludeSubfolders;
 		if (excludedFoldersSettings === '') {
