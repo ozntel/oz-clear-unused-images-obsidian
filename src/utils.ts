@@ -47,8 +47,26 @@ export class ImageUtils {
                 }
             }
         }
+        // Check Frontmatters if there is any image link
+        let mdFiles = app.vault.getMarkdownFiles();
+        mdFiles.forEach(mdFile => {
+            let fileCache = app.metadataCache.getFileCache(mdFile);
+            if(fileCache.frontmatter){
+               let frontmatter = fileCache.frontmatter;
+               for(let k of Object.keys(frontmatter)){
+                    if(typeof(frontmatter[k]) === 'string' && ImageUtils.pathIsAnImage(frontmatter[k])){
+                        images_set.add(frontmatter[k]);
+                    }
+               }
+            }
+        })
         return images_set
     }
+
+    static pathIsAnImage = (path: string) => {
+        var match = path.match(ImageUtils.imageRegex);
+        return (match ? true : false);
+    };
 
 }
 

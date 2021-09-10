@@ -9,7 +9,7 @@ export default class OzanClearImages extends Plugin {
 	ribbonIconEl: HTMLElement | undefined = undefined;
 
 	async onload() {
-		console.log("Loading oz-clear-unused-images plugin")
+		console.log("Clear Unused Images plugin loaded...")
 		this.addSettingTab(new OzanClearImagesSettingsTab(this.app, this));
 		await this.loadSettings();
 		this.addCommand({
@@ -21,7 +21,7 @@ export default class OzanClearImages extends Plugin {
 	}
 
 	onunload() {
-		console.log('Unloading oz-clear-unused-images plugin');
+        console.log("Clear Unused Images plugin unloaded...")
 	}
 
 	async loadSettings() {
