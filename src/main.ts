@@ -4,24 +4,23 @@ import { OzanClearImagesSettings, DEFAULT_SETTINGS } from './settings';
 import { ImageUtils, DeleteUtils } from './utils';
 
 export default class OzanClearImages extends Plugin {
-
 	settings: OzanClearImagesSettings;
 	ribbonIconEl: HTMLElement | undefined = undefined;
 
 	async onload() {
-		console.log("Clear Unused Images plugin loaded...")
+		console.log('Clear Unused Images plugin loaded...');
 		this.addSettingTab(new OzanClearImagesSettingsTab(this.app, this));
 		await this.loadSettings();
 		this.addCommand({
 			id: 'clear-images-obsidian',
 			name: 'Clear Unused Images in Vault',
-			callback: () => this.clearUnusedImages()
+			callback: () => this.clearUnusedImages(),
 		});
 		this.refreshIconRibbon();
 	}
 
 	onunload() {
-        console.log("Clear Unused Images plugin unloaded...")
+		console.log('Clear Unused Images plugin unloaded...');
 	}
 
 	async loadSettings() {
@@ -37,13 +36,13 @@ export default class OzanClearImages extends Plugin {
 		if (this.settings.ribbonIcon) {
 			this.ribbonIconEl = this.addRibbonIcon('image-file', 'Clear Unused Images', (event): void => {
 				this.clearUnusedImages();
-			})
+			});
 		}
-	}
+	};
 
 	// Compare Used Images with all images and return unused ones
 	clearUnusedImages = async () => {
-		var unused_images: TFile[] = ImageUtils.getUnusedImages(this.app)
+		var unused_images: TFile[] = ImageUtils.getUnusedImages(this.app);
 		var len = unused_images.length;
 		if (len > 0) {
 			console.log('[+] Clearing started.');
@@ -54,6 +53,5 @@ export default class OzanClearImages extends Plugin {
 		} else {
 			new Notice('All images are used. Nothing was deleted.');
 		}
-	}
-
+	};
 }
