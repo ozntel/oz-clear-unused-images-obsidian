@@ -44,17 +44,13 @@ You can now exclude all subfolders under the folder paths provided above:
 
     <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
 
-3. You will see a notification of how many images are deleted from your vault:
+3. If you have turned on "Delete Logs" option in plugin settings, you will see a modal popping up with an information which images are deleted from your vault:
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/images-deleted.png">
+<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/logs-modal.png">
 
 In case all images are used, you will see communication as below:
 
 <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/nothing-deleted.png">
-
-If you want to check which images are deleted, you can go to console and see the details:
-
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/deleted-images.png">
 
 **Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp
 
