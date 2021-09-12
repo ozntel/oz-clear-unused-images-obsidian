@@ -1,7 +1,7 @@
 import { Plugin, TFile, Notice } from 'obsidian';
 import { OzanClearImagesSettingsTab } from './settings';
 import { OzanClearImagesSettings, DEFAULT_SETTINGS } from './settings';
-import { ImageUtils, DeleteUtils } from './utils';
+import * as Util from './util';
 
 export default class OzanClearImages extends Plugin {
 	settings: OzanClearImagesSettings;
@@ -42,11 +42,11 @@ export default class OzanClearImages extends Plugin {
 
 	// Compare Used Images with all images and return unused ones
 	clearUnusedImages = async () => {
-		var unusedImages: TFile[] = ImageUtils.getUnusedImages(this.app);
+		var unusedImages: TFile[] = Util.getUnusedImages(this.app);
 		var len = unusedImages.length;
 		if (len > 0) {
 			console.log('[+] Clearing started.');
-			DeleteUtils.deleteFilesInTheList(unusedImages, this, this.app).then((nr) => {
+			Util.deleteFilesInTheList(unusedImages, this, this.app).then((nr) => {
 				new Notice(nr + ' image(s) in total deleted.');
 				console.log('[+] Clearing completed.');
 			});
