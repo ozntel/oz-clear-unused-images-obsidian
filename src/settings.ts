@@ -3,6 +3,7 @@ import { PluginSettingTab, Setting, App } from 'obsidian';
 
 export interface OzanClearImagesSettings {
 	deleteOption: string;
+	logsModal: boolean;
 	excludedFolders: string;
 	ribbonIcon: boolean;
 	excludeSubfolders: boolean;
@@ -10,6 +11,7 @@ export interface OzanClearImagesSettings {
 
 export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
 	deleteOption: '.trash',
+	logsModal: true,
 	excludedFolders: '',
 	ribbonIcon: false,
 	excludeSubfolders: false,
@@ -36,6 +38,18 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
 					this.plugin.settings.ribbonIcon = value;
 					this.plugin.saveSettings();
 					this.plugin.refreshIconRibbon();
+				})
+			);
+
+		new Setting(containerEl)
+			.setName('Delete Logs')
+			.setDesc(
+				'Turn off if you dont want to view the delete logs Modal to pop up after deletion is completed. It wont appear if no image is deleted'
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.logsModal).onChange((value) => {
+					this.plugin.settings.logsModal = value;
+					this.plugin.saveSettings();
 				})
 			);
 

@@ -1,6 +1,7 @@
 import { Plugin, TFile, Notice } from 'obsidian';
 import { OzanClearImagesSettingsTab } from './settings';
 import { OzanClearImagesSettings, DEFAULT_SETTINGS } from './settings';
+import { LogsModal } from './modals';
 import * as Util from './util';
 
 export default class OzanClearImages extends Plugin {
@@ -45,10 +46,17 @@ export default class OzanClearImages extends Plugin {
 		var unusedImages: TFile[] = Util.getUnusedImages(this.app);
 		var len = unusedImages.length;
 		if (len > 0) {
-			console.log('[+] Clearing started.');
-			Util.deleteFilesInTheList(unusedImages, this, this.app).then((nr) => {
-				new Notice(nr + ' image(s) in total deleted.');
-				console.log('[+] Clearing completed.');
+			let logs = '';
+			logs += `[+] ${Util.getFormattedDate()}: Clearing started.</br>`;
+			console.log();
+			Util.deleteFilesInTheList(unusedImages, this, this.app).then(({ deletedImages, textToView }) => {
+				logs += textToView;
+				logs += '[+] ' + deletedImages.toString() + ' image(s) in total deleted.</br>';
+				logs += `[+] ${Util.getFormattedDate()}: Clearing completed.`;
+				if (this.settings.logsModal) {
+					let modal = new LogsModal(logs, this.app);
+					modal.open();
+				}
 			});
 		} else {
 			new Notice('All images are used. Nothing was deleted.');

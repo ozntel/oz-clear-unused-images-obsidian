@@ -71,27 +71,32 @@ const pathIsAnImage = (path: string) => {
 /* ------------------ Deleting Handlers  ------------------ */
 
 // Clear Images From the Provided List
-export const deleteFilesInTheList = async (fileList: TFile[], plugin: OzanClearImages, app: App): Promise<number> => {
+export const deleteFilesInTheList = async (
+	fileList: TFile[],
+	plugin: OzanClearImages,
+	app: App
+): Promise<{ deletedImages: number; textToView: string }> => {
 	var deleteOption = plugin.settings.deleteOption;
 	var deletedImages = 0;
+	let textToView = '';
 	for (let file of fileList) {
 		if (fileIsInExcludedFolder(file, plugin)) {
 			console.log('File not referenced but excluded: ' + file.path);
 		} else {
 			if (deleteOption === '.trash') {
 				await app.vault.trash(file, false);
-				console.log('Moved to Obsidian Trash: ' + file.path);
+				textToView += `[+] Moved to Obsidian Trash: ` + file.path + '</br>';
 			} else if (deleteOption === 'system-trash') {
 				await app.vault.trash(file, true);
-				console.log('Moved to System Trash: ' + file.path);
+				textToView += `[+] Moved to System Trash: ` + file.path + '</br>';
 			} else if (deleteOption === 'permanent') {
 				await app.vault.delete(file);
-				console.log('Deleted: ' + file.path);
+				textToView += `[+] Deleted Permanently: ` + file.path + '</br>';
 			}
 			deletedImages++;
 		}
 	}
-	return deletedImages;
+	return { deletedImages, textToView };
 };
 
 // Check if File is Under Excluded Folders
@@ -125,4 +130,18 @@ const fileIsInExcludedFolder = (file: TFile, plugin: OzanClearImages): boolean =
 
 		return false;
 	}
+};
+
+/* ------------------ Helpers  ------------------ */
+
+export const getFormattedDate = () => {
+	let dt = new Date();
+	return dt.toLocaleDateString('en-GB', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit',
+	});
 };
