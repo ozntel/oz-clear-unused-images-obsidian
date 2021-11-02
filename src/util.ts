@@ -3,7 +3,7 @@ import OzanClearImages from './main';
 
 /* ------------------ Image Handlers  ------------------ */
 
-const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/;
+const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/i;
 const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp']);
 
 // Create the List of Unused Images
@@ -28,7 +28,7 @@ const getAllImagesInVault = (app: App): TFile[] => {
 	let allFiles: TFile[] = app.vault.getFiles();
 	let images: TFile[] = [];
 	for (let i = 0; i < allFiles.length; i++) {
-		if (imageExtensions.has(allFiles[i].extension)) {
+		if (imageExtensions.has(allFiles[i].extension.toLowerCase())) {
 			images.push(allFiles[i]);
 		}
 	}
