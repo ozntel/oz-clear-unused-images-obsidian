@@ -14,8 +14,13 @@ export default class OzanClearImages extends Plugin {
         await this.loadSettings();
         this.addCommand({
             id: 'clear-images-obsidian',
-            name: 'Clear Unused Images in Vault',
-            callback: () => this.clearUnusedImages(),
+            name: 'Clear Unused Images',
+            callback: () => this.clearUnusedAttachments('image'),
+        });
+        this.addCommand({
+            id: 'clear-unused-attachments',
+            name: 'Clear Unused Attachments',
+            callback: () => this.clearUnusedAttachments('all'),
         });
         this.refreshIconRibbon();
     }
@@ -36,20 +41,19 @@ export default class OzanClearImages extends Plugin {
         this.ribbonIconEl?.remove();
         if (this.settings.ribbonIcon) {
             this.ribbonIconEl = this.addRibbonIcon('image-file', 'Clear Unused Images', (event): void => {
-                this.clearUnusedImages();
+                this.clearUnusedAttachments('image');
             });
         }
     };
 
     // Compare Used Images with all images and return unused ones
-    clearUnusedImages = async () => {
-        var unusedImages: TFile[] = Util.getUnusedImages(this.app);
-        var len = unusedImages.length;
+    clearUnusedAttachments = async (type: 'all' | 'image') => {
+        var unusedAttachments: TFile[] = Util.getUnusedAttachments(this.app, type);
+        var len = unusedAttachments.length;
         if (len > 0) {
             let logs = '';
             logs += `[+] ${Util.getFormattedDate()}: Clearing started.</br>`;
-            console.log();
-            Util.deleteFilesInTheList(unusedImages, this, this.app).then(({ deletedImages, textToView }) => {
+            Util.deleteFilesInTheList(unusedAttachments, this, this.app).then(({ deletedImages, textToView }) => {
                 logs += textToView;
                 logs += '[+] ' + deletedImages.toString() + ' image(s) in total deleted.</br>';
                 logs += `[+] ${Util.getFormattedDate()}: Clearing completed.`;

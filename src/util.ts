@@ -4,68 +4,89 @@ import OzanClearImages from './main';
 /* ------------------ Image Handlers  ------------------ */
 
 const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/i;
+const bannerRegex = /!\[\[(.*?)\]\]/i;
 const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp']);
 
 // Create the List of Unused Images
-export const getUnusedImages = (app: App) => {
-    var allImagesInVault: TFile[] = getAllImagesInVault(app);
-    var unusedImages: TFile[] = [];
-    var usedImagesSet: Set<string>;
+export const getUnusedAttachments = (app: App, type: 'image' | 'all') => {
+    var allAttachmentsInVault: TFile[] = getAttachmentsInVault(app, type);
+    var unusedAttachments: TFile[] = [];
+    var usedAttachmentsSet: Set<string>;
 
-    // Get Used Images in All Markdown Files
-    usedImagesSet = getImagePathSetForVault(app);
+    // Get Used Attachments in All Markdown Files
+    usedAttachmentsSet = getAttachmentPathSetForVault(app, type);
 
-    // Compare All Images vs Used Images
-    allImagesInVault.forEach((img) => {
-        if (!usedImagesSet.has(img.path)) unusedImages.push(img);
+    console.log(usedAttachmentsSet);
+
+    // Compare All Attachments vs Used Attachments
+    allAttachmentsInVault.forEach((attachment) => {
+        if (!usedAttachmentsSet.has(attachment.path)) unusedAttachments.push(attachment);
     });
 
-    return unusedImages;
+    return unusedAttachments;
 };
 
 // Getting all available images saved in vault
-const getAllImagesInVault = (app: App): TFile[] => {
+const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
     let allFiles: TFile[] = app.vault.getFiles();
-    let images: TFile[] = [];
+    let attachments: TFile[] = [];
     for (let i = 0; i < allFiles.length; i++) {
-        if (imageExtensions.has(allFiles[i].extension.toLowerCase())) {
-            images.push(allFiles[i]);
+        if (allFiles[i].extension !== 'md') {
+            // Only images
+            if (imageExtensions.has(allFiles[i].extension.toLowerCase())) {
+                attachments.push(allFiles[i]);
+            }
+            // All Files
+            else if (type === 'all') {
+                attachments.push(allFiles[i]);
+            }
         }
     }
-    return images;
+    return attachments;
 };
 
-// New Method for Getting All Used Images
-const getImagePathSetForVault = (app: App): Set<string> => {
-    var imagesSet: Set<string> = new Set();
+// New Method for Getting All Used Attachments
+const getAttachmentPathSetForVault = (app: App, type: 'image' | 'all'): Set<string> => {
+    var attachmentsSet: Set<string> = new Set();
     var resolvedLinks = app.metadataCache.resolvedLinks;
     if (resolvedLinks) {
         for (const [mdFile, links] of Object.entries(resolvedLinks)) {
             for (const [filePath, nr] of Object.entries(resolvedLinks[mdFile])) {
                 var imageMatch = filePath.match(imageRegex);
-                if (imageMatch) imagesSet.add(imageMatch[0]);
+                if (imageMatch) attachmentsSet.add(imageMatch[0]);
+                // If all, include the rest of the attachments
+                if (type === 'all' && !(filePath as String).endsWith('.md')) {
+                    attachmentsSet.add(filePath);
+                }
             }
         }
     }
-    // Check Frontmatters if there is any image link
+    // Check Frontmatters if there is a link
     let mdFiles = app.vault.getMarkdownFiles();
     mdFiles.forEach((mdFile) => {
         let fileCache = app.metadataCache.getFileCache(mdFile);
         if (fileCache.frontmatter) {
             let frontmatter = fileCache.frontmatter;
             for (let k of Object.keys(frontmatter)) {
-                if (typeof frontmatter[k] === 'string' && pathIsAnImage(frontmatter[k])) {
-                    imagesSet.add(frontmatter[k]);
+                if (typeof frontmatter[k] === 'string') {
+                    if (frontmatter[k].match(bannerRegex)) {
+                        let fileName = frontmatter[k].match(bannerRegex)[1];
+                        let file = app.metadataCache.getFirstLinkpathDest(fileName, mdFile.path);
+                        if (file) {
+                            attachmentsSet.add(file.path);
+                        }
+                    } else if (pathIsAnImage(frontmatter[k])) {
+                        attachmentsSet.add(frontmatter[k]);
+                    }
                 }
             }
         }
     });
-    return imagesSet;
+    return attachmentsSet;
 };
 
 const pathIsAnImage = (path: string) => {
-    var match = path.match(imageRegex);
-    return match ? true : false;
+    return path.match(imageRegex);
 };
 
 /* ------------------ Deleting Handlers  ------------------ */
