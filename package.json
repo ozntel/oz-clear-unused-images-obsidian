@@ -1,6 +1,6 @@
 {
     "name": "oz-clear-unused-images",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Clear the images that you are not using anymore in your markdown notes to save space.",
     "main": "main.js",
     "scripts": {
