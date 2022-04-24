@@ -16,8 +16,6 @@ export const getUnusedAttachments = (app: App, type: 'image' | 'all') => {
     // Get Used Attachments in All Markdown Files
     usedAttachmentsSet = getAttachmentPathSetForVault(app, type);
 
-    console.log(usedAttachmentsSet);
-
     // Compare All Attachments vs Used Attachments
     allAttachmentsInVault.forEach((attachment) => {
         if (!usedAttachmentsSet.has(attachment.path)) unusedAttachments.push(attachment);

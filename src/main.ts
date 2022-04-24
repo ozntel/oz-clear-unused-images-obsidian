@@ -63,7 +63,7 @@ export default class OzanClearImages extends Plugin {
                 }
             });
         } else {
-            new Notice('All images are used. Nothing was deleted.');
+            new Notice(`All ${type === 'image' ? 'images' : 'attachments'} are used. Nothing was deleted.`);
         }
     };
 }
