@@ -8,13 +8,13 @@ const bannerRegex = /!\[\[(.*?)\]\]/i;
 const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp']);
 
 // Create the List of Unused Images
-export const getUnusedAttachments = (app: App, type: 'image' | 'all') => {
+export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
     var allAttachmentsInVault: TFile[] = getAttachmentsInVault(app, type);
     var unusedAttachments: TFile[] = [];
     var usedAttachmentsSet: Set<string>;
 
     // Get Used Attachments in All Markdown Files
-    usedAttachmentsSet = getAttachmentPathSetForVault(app, type);
+    usedAttachmentsSet = await getAttachmentPathSetForVault(app, type);
 
     // Compare All Attachments vs Used Attachments
     allAttachmentsInVault.forEach((attachment) => {
@@ -29,7 +29,7 @@ const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
     let allFiles: TFile[] = app.vault.getFiles();
     let attachments: TFile[] = [];
     for (let i = 0; i < allFiles.length; i++) {
-        if (allFiles[i].extension !== 'md') {
+        if (!['md', 'canvas'].includes(allFiles[i].extension)) {
             // Only images
             if (imageExtensions.has(allFiles[i].extension.toLowerCase())) {
                 attachments.push(allFiles[i]);
@@ -44,7 +44,7 @@ const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
 };
 
 // New Method for Getting All Used Attachments
-const getAttachmentPathSetForVault = (app: App, type: 'image' | 'all'): Set<string> => {
+const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Promise<Set<string>> => {
     var attachmentsSet: Set<string> = new Set();
     var resolvedLinks = app.metadataCache.resolvedLinks;
     if (resolvedLinks) {
@@ -59,27 +59,44 @@ const getAttachmentPathSetForVault = (app: App, type: 'image' | 'all'): Set<stri
             }
         }
     }
-    // Check Frontmatters if there is a link
-    let mdFiles = app.vault.getMarkdownFiles();
-    mdFiles.forEach((mdFile) => {
-        let fileCache = app.metadataCache.getFileCache(mdFile);
-        if (fileCache.frontmatter) {
-            let frontmatter = fileCache.frontmatter;
-            for (let k of Object.keys(frontmatter)) {
-                if (typeof frontmatter[k] === 'string') {
-                    if (frontmatter[k].match(bannerRegex)) {
-                        let fileName = frontmatter[k].match(bannerRegex)[1];
-                        let file = app.metadataCache.getFirstLinkpathDest(fileName, mdFile.path);
-                        if (file) {
-                            attachmentsSet.add(file.path);
+    // Loop Files and Check Frontmatter/Canvas
+    let allFiles = app.vault.getFiles();
+    for (let i = 0; i < allFiles.length; i++) {
+        let obsFile = allFiles[i];
+        // Check Frontmatter for md files
+        if (obsFile.extension === 'md') {
+            let fileCache = app.metadataCache.getFileCache(obsFile);
+            if (fileCache.frontmatter) {
+                let frontmatter = fileCache.frontmatter;
+                for (let k of Object.keys(frontmatter)) {
+                    if (typeof frontmatter[k] === 'string') {
+                        if (frontmatter[k].match(bannerRegex)) {
+                            let fileName = frontmatter[k].match(bannerRegex)[1];
+                            let file = app.metadataCache.getFirstLinkpathDest(fileName, obsFile.path);
+                            if (file) {
+                                attachmentsSet.add(file.path);
+                            }
+                        } else if (pathIsAnImage(frontmatter[k])) {
+                            attachmentsSet.add(frontmatter[k]);
                         }
-                    } else if (pathIsAnImage(frontmatter[k])) {
-                        attachmentsSet.add(frontmatter[k]);
                     }
                 }
             }
         }
-    });
+        // Check Canvas for links
+        else if (obsFile.extension === 'canvas') {
+            let fileRead = await app.vault.cachedRead(obsFile);
+            let canvasData = JSON.parse(fileRead);
+            if (canvasData.nodes && canvasData.nodes.length > 0) {
+                for (const node of canvasData.nodes) {
+                    // node.type: 'text' | 'file'
+                    if (node.type === 'file') {
+                        attachmentsSet.add(node.file);
+                    }
+                }
+            }
+        }
+    }
     return attachmentsSet;
 };
 

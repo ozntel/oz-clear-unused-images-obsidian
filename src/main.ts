@@ -48,7 +48,7 @@ export default class OzanClearImages extends Plugin {
 
     // Compare Used Images with all images and return unused ones
     clearUnusedAttachments = async (type: 'all' | 'image') => {
-        var unusedAttachments: TFile[] = Util.getUnusedAttachments(this.app, type);
+        var unusedAttachments: TFile[] = await Util.getUnusedAttachments(this.app, type);
         var len = unusedAttachments.length;
         if (len > 0) {
             let logs = '';
