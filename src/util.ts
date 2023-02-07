@@ -1,5 +1,6 @@
 import { App, TFile } from 'obsidian';
 import OzanClearImages from './main';
+import { getAllLinkMatchesInFile, LinkMatch } from './linkDetector';
 
 /* ------------------ Image Handlers  ------------------ */
 
@@ -50,10 +51,7 @@ const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Pr
     if (resolvedLinks) {
         for (const [mdFile, links] of Object.entries(resolvedLinks)) {
             for (const [filePath, nr] of Object.entries(resolvedLinks[mdFile])) {
-                var imageMatch = filePath.match(imageRegex);
-                if (imageMatch) attachmentsSet.add(imageMatch[0]);
-                // If all, include the rest of the attachments
-                if (type === 'all' && !(filePath as String).endsWith('.md')) {
+                if (!(filePath as String).endsWith('.md')) {
                     attachmentsSet.add(filePath);
                 }
             }
@@ -63,8 +61,9 @@ const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Pr
     let allFiles = app.vault.getFiles();
     for (let i = 0; i < allFiles.length; i++) {
         let obsFile = allFiles[i];
-        // Check Frontmatter for md files
+        // Check Frontmatter for md files and additional links that might be missed in resolved links
         if (obsFile.extension === 'md') {
+            // Frontmatter
             let fileCache = app.metadataCache.getFileCache(obsFile);
             if (fileCache.frontmatter) {
                 let frontmatter = fileCache.frontmatter;
@@ -74,13 +73,18 @@ const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Pr
                             let fileName = frontmatter[k].match(bannerRegex)[1];
                             let file = app.metadataCache.getFirstLinkpathDest(fileName, obsFile.path);
                             if (file) {
-                                attachmentsSet.add(file.path);
+                                addToSet(attachmentsSet, file.path);
                             }
                         } else if (pathIsAnImage(frontmatter[k])) {
-                            attachmentsSet.add(frontmatter[k]);
+                            addToSet(attachmentsSet, frontmatter[k]);
                         }
                     }
                 }
+            }
+            // Any Additional Link
+            let linkMatches: LinkMatch[] = await getAllLinkMatchesInFile(obsFile, app);
+            for (let linkMatch of linkMatches) {
+                addToSet(attachmentsSet, linkMatch.linkText);
             }
         }
         // Check Canvas for links
@@ -91,12 +95,18 @@ const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Pr
                 for (const node of canvasData.nodes) {
                     // node.type: 'text' | 'file'
                     if (node.type === 'file') {
-                        attachmentsSet.add(node.file);
+                        addToSet(attachmentsSet, node.file);
+                    } else if (node.type == 'text') {
+                        let linkMatches: LinkMatch[] = await getAllLinkMatchesInFile(obsFile, app, node.text);
+                        for (let linkMatch of linkMatches) {
+                            addToSet(attachmentsSet, linkMatch.linkText);
+                        }
                     }
                 }
             }
         }
     }
+    console.log(attachmentsSet);
     return attachmentsSet;
 };
 
@@ -180,4 +190,10 @@ export const getFormattedDate = () => {
         minute: '2-digit',
         second: '2-digit',
     });
+};
+
+const addToSet = (setObj: Set<string>, value: string) => {
+    if (!setObj.has(value)) {
+        setObj.add(value);
+    }
 };
