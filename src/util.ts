@@ -106,7 +106,6 @@ const getAttachmentPathSetForVault = async (app: App): Promise<Set<string>> => {
             }
         }
     }
-    console.log(attachmentsSet);
     return attachmentsSet;
 };
 
