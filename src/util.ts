@@ -15,7 +15,7 @@ export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
     var usedAttachmentsSet: Set<string>;
 
     // Get Used Attachments in All Markdown Files
-    usedAttachmentsSet = await getAttachmentPathSetForVault(app, type);
+    usedAttachmentsSet = await getAttachmentPathSetForVault(app);
 
     // Compare All Attachments vs Used Attachments
     allAttachmentsInVault.forEach((attachment) => {
@@ -45,7 +45,7 @@ const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
 };
 
 // New Method for Getting All Used Attachments
-const getAttachmentPathSetForVault = async (app: App, type: 'image' | 'all'): Promise<Set<string>> => {
+const getAttachmentPathSetForVault = async (app: App): Promise<Set<string>> => {
     var attachmentsSet: Set<string> = new Set();
     var resolvedLinks = app.metadataCache.resolvedLinks;
     if (resolvedLinks) {
