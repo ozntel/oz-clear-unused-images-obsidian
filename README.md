@@ -52,7 +52,7 @@ In case all images are used, you will see communication as below:
 
 <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/nothing-deleted.png">
 
-**Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp
+**Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp, webp, tiff, heic, raw
 
 ## Planned Features
 
