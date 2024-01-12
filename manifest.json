@@ -1,11 +1,11 @@
 {
-    "id": "oz-clear-unused-images",
-    "name": "Clear Unused Images",
-    "version": "1.1.0",
-    "minAppVersion": "0.11.13",
+    "id": "obsidian-clear-unused-images-plus",
+    "name": "Clear Unused Images plus",
+    "version": "1.1.1",
+    "minAppVersion": "0.0.1",
     "description": "Clear the images that you are not using anymore in your markdown notes to save space.",
-    "author": "Ozan",
-    "authorUrl": "https://www.ozan.pl",
-    "fundingUrl": "https://ko-fi.com/ozante",
+    "author": "xjl456852",
+    "authorUrl": "https://github.com/xjl456852",
+    "fundingUrl": "https://github.com/xjl456852",
     "isDesktopOnly": false
 }
