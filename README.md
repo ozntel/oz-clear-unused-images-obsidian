@@ -65,6 +65,4 @@ In case all images are used, you will see communication as below:
 
 If you are enjoying the plugin then you can support my work and enthusiasm by buying me a coffee:
 
-<a href='https://ko-fi.com/L3L356V6Q' target='_blank'>
-    <img height='48' style='border:0px;height:48px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-</a>
+![支付宝](https://github.com/xjl456852/ob-clear-unused-images-plus/assets/8008097/aa25357b-5b55-4374-8f26-16e9cb162290)
