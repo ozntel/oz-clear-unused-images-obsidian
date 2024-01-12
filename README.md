@@ -65,4 +65,6 @@ In case all images are used, you will see communication as below:
 
 If you are enjoying the plugin then you can support my work and enthusiasm by buying me a coffee:
 
-![支付宝](https://github.com/xjl456852/ob-clear-unused-images-plus/assets/8008097/aa25357b-5b55-4374-8f26-16e9cb162290)
+<a href='https://www.buymeacoffee.com/xiejl' target='_blank'>
+    <img src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee &emoji=&slug=Xiejl&button_colour=BD5FFF&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00' alt='Buy Me a Coffee' />
+</a>
