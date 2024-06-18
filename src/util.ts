@@ -4,22 +4,22 @@ import { getAllLinkMatchesInFile, LinkMatch } from './linkDetector';
 
 /* ------------------ Image Handlers  ------------------ */
 
-const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/i;
+const imageRegex = /.*(jpe?g|png|gif|svg|bmp|webp)/i;
 const bannerRegex = /!\[\[(.*?)\]\]/i;
-const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp']);
+const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp', 'webp']);
 
 // Create the List of Unused Images
-export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
+export const getUnusedAttachments = async (app: App, type: 'image' | 'all', plugin: OzanClearImages) => {
     var allAttachmentsInVault: TFile[] = getAttachmentsInVault(app, type);
     var unusedAttachments: TFile[] = [];
-    var usedAttachmentsSet: Set<string>;
+    var usedAttachmentsSet: Set<string> = await getAttachmentPathSetForVault(app);
+    var includedFolders = new Set(plugin.settings.includedFolders.split(',').map(folderPath => folderPath.trim()));
 
-    // Get Used Attachments in All Markdown Files
-    usedAttachmentsSet = await getAttachmentPathSetForVault(app);
-
-    // Compare All Attachments vs Used Attachments
     allAttachmentsInVault.forEach((attachment) => {
-        if (!usedAttachmentsSet.has(attachment.path)) unusedAttachments.push(attachment);
+        let isInIncludedFolder = includedFolders.size === 0 || [...includedFolders].some(folder => attachment.path.startsWith(folder));
+        if (!usedAttachmentsSet.has(attachment.path) && isInIncludedFolder) {
+            unusedAttachments.push(attachment);
+        }
     });
 
     return unusedAttachments;

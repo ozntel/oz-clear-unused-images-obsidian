@@ -7,6 +7,7 @@ export interface OzanClearImagesSettings {
     excludedFolders: string;
     ribbonIcon: boolean;
     excludeSubfolders: boolean;
+    includedFolders: string;
 }
 
 export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
@@ -15,6 +16,7 @@ export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
     excludedFolders: '',
     ribbonIcon: false,
     excludeSubfolders: false,
+    includedFolders: '',
 };
 
 export class OzanClearImagesSettingsTab extends PluginSettingTab {
@@ -67,28 +69,39 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
                 });
             });
 
-        new Setting(containerEl)
-            .setName('Excluded Folder Full Paths')
-            .setDesc(
-                `Provide the FULL path of the folder names (Case Sensitive) divided by comma (,) to be excluded from clearing. 
-					i.e. For images under Personal/Files/Zodiac -> Personal/Files/Zodiac should be used for exclusion`
-            )
-            .addTextArea((text) =>
-                text.setValue(this.plugin.settings.excludedFolders).onChange((value) => {
-                    this.plugin.settings.excludedFolders = value;
-                    this.plugin.saveSettings();
-                })
-            );
+        // new Setting(containerEl)
+        //     .setName('Excluded Folder Full Paths')
+        //     .setDesc(
+        //         `Provide the FULL path of the folder names (Case Sensitive) divided by comma (,) to be excluded from clearing. 
+		// 			i.e. For images under Personal/Files/Zodiac -> Personal/Files/Zodiac should be used for exclusion`
+        //     )
+        //     .addTextArea((text) =>
+        //         text.setValue(this.plugin.settings.excludedFolders).onChange((value) => {
+        //             this.plugin.settings.excludedFolders = value;
+        //             this.plugin.saveSettings();
+        //         })
+        //     );
 
+        // new Setting(containerEl)
+        //     .setName('Exclude Subfolders')
+        //     .setDesc('Turn on this option if you want to also exclude all subfolders of the folder paths provided above.')
+        //     .addToggle((toggle) =>
+        //         toggle.setValue(this.plugin.settings.excludeSubfolders).onChange((value) => {
+        //             this.plugin.settings.excludeSubfolders = value;
+        //             this.plugin.saveSettings();
+        //         })
+        //     );
+        
         new Setting(containerEl)
-            .setName('Exclude Subfolders')
-            .setDesc('Turn on this option if you want to also exclude all subfolders of the folder paths provided above.')
-            .addToggle((toggle) =>
-                toggle.setValue(this.plugin.settings.excludeSubfolders).onChange((value) => {
-                    this.plugin.settings.excludeSubfolders = value;
-                    this.plugin.saveSettings();
-                })
-            );
+        .setName('Included Folder Full Paths')
+        .setDesc(`Provide the FULL path of the folder names (Case Sensitive) divided by comma (,) to be included for clearing.
+            i.e. For images under Personal/Files/Zodiac -> Personal/Files/Zodiac should be used for inclusion`)
+        .addTextArea((text) =>
+            text.setValue(this.plugin.settings.includedFolders).onChange((value) => {
+                this.plugin.settings.includedFolders = value;
+                this.plugin.saveSettings();
+            })
+        );
 
         const coffeeDiv = containerEl.createDiv('coffee');
         coffeeDiv.addClass('oz-coffee-div');
