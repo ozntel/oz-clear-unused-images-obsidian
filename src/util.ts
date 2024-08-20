@@ -4,7 +4,7 @@ import { getAllLinkMatchesInFile, LinkMatch } from './linkDetector';
 
 /* ------------------ Image Handlers  ------------------ */
 
-const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/i;
+const imageRegex = /.*(jpe?g|png|gif|svg|bmp|webp)/i;
 const bannerRegex = /!\[\[(.*?)\]\]/i;
 const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp', 'webp']);
 
