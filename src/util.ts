@@ -4,9 +4,9 @@ import { getAllLinkMatchesInFile, LinkMatch } from './linkDetector';
 
 /* ------------------ Image Handlers  ------------------ */
 
-const imageRegex = /.*(jpe?g|png|gif|svg|bmp)/i;
+const imageRegex = /.*(jpe?g|png|gif|svg|bmp|webp|avif)/i;
 const bannerRegex = /!\[\[(.*?)\]\]/i;
-const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp', 'webp']);
+const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp', 'webp', 'avif']);
 
 // Create the List of Unused Images
 export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
