@@ -1,0 +1,56 @@
+name: Build Obsidian Plugin
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build plugin
+        run: npm run build
+      
+      - name: Create release package
+        run: |
+          # Get version from manifest.json
+          VERSION=$(jq -r '.version' manifest.json)
+          
+          # Create dist directory
+          mkdir -p dist
+          
+          # Copy plugin files to dist
+          cp main.js manifest.json styles.css dist/
+          
+          # Create zip archive
+          cd dist
+          zip -r ../oz-clear-unused-images-${VERSION}.zip .
+          cd ..
+      
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            oz-clear-unused-images-*.zip
+            main.js
+            manifest.json
+            styles.css

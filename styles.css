@@ -8,3 +8,39 @@
     align-items: center;
     justify-content: center;
 }
+
+.unused-file-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 8px;
+}
+
+.file-checkbox {
+    flex-shrink: 0;
+}
+
+.clickable-file-path {
+    flex-grow: 1;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--text-muted);
+    text-decoration-style: dotted;
+}
+
+.clickable-file-path:hover {
+    color: var(--text-accent);
+}
+
+.ignore-button {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 4px 12px;
+    font-size: 12px;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}

@@ -1,5 +1,6 @@
 import OzanClearImages from './main';
 import { PluginSettingTab, Setting, App } from 'obsidian';
+import { i18n } from './i18n';
 
 export interface OzanClearImagesSettings {
     deleteOption: string;
@@ -7,6 +8,7 @@ export interface OzanClearImagesSettings {
     excludedFolders: string;
     ribbonIcon: boolean;
     excludeSubfolders: boolean;
+    excludedFiles: string[];
 }
 
 export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
@@ -15,6 +17,7 @@ export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
     excludedFolders: '',
     ribbonIcon: false,
     excludeSubfolders: false,
+    excludedFiles: [],
 };
 
 export class OzanClearImagesSettingsTab extends PluginSettingTab {
@@ -28,11 +31,11 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
     display(): void {
         let { containerEl } = this;
         containerEl.empty();
-        containerEl.createEl('h2', { text: 'Clear Images Settings' });
+        containerEl.createEl('h2', { text: i18n.t('settings.title') });
 
         new Setting(containerEl)
-            .setName('Ribbon Icon')
-            .setDesc('Turn on if you want Ribbon Icon for clearing the images.')
+            .setName(i18n.t('settings.ribbonIcon.name'))
+            .setDesc(i18n.t('settings.ribbonIcon.desc'))
             .addToggle((toggle) =>
                 toggle.setValue(this.plugin.settings.ribbonIcon).onChange((value) => {
                     this.plugin.settings.ribbonIcon = value;
@@ -42,9 +45,9 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName('Delete Logs')
+            .setName(i18n.t('settings.logsModal.name'))
             .setDesc(
-                'Turn off if you dont want to view the delete logs Modal to pop up after deletion is completed. It wont appear if no image is deleted'
+                i18n.t('settings.logsModal.desc')
             )
             .addToggle((toggle) =>
                 toggle.setValue(this.plugin.settings.logsModal).onChange((value) => {
@@ -54,12 +57,12 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName('Deleted Image Destination')
-            .setDesc('Select where you want images to be moved once they are deleted')
+            .setName(i18n.t('settings.deleteOption.name'))
+            .setDesc(i18n.t('settings.deleteOption.desc'))
             .addDropdown((dropdown) => {
-                dropdown.addOption('permanent', 'Delete Permanently');
-                dropdown.addOption('.trash', 'Move to Obsidian Trash');
-                dropdown.addOption('system-trash', 'Move to System Trash');
+                dropdown.addOption('permanent', i18n.t('settings.deleteOption.permanent'));
+                dropdown.addOption('.trash', i18n.t('settings.deleteOption.obsidian.trash'));
+                dropdown.addOption('system-trash', i18n.t('settings.deleteOption.system.trash'));
                 dropdown.setValue(this.plugin.settings.deleteOption);
                 dropdown.onChange((option) => {
                     this.plugin.settings.deleteOption = option;
@@ -68,10 +71,9 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName('Excluded Folder Full Paths')
+            .setName(i18n.t('settings.excludedFolders.name'))
             .setDesc(
-                `Provide the FULL path of the folder names (Case Sensitive) divided by comma (,) to be excluded from clearing. 
-					i.e. For images under Personal/Files/Zodiac -> Personal/Files/Zodiac should be used for exclusion`
+                i18n.t('settings.excludedFolders.desc')
             )
             .addTextArea((text) =>
                 text.setValue(this.plugin.settings.excludedFolders).onChange((value) => {
@@ -79,10 +81,20 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
                     this.plugin.saveSettings();
                 })
             );
+        
+        new Setting(containerEl)
+            .setName(i18n.t('settings.excludedFiles.name'))
+            .setDesc(i18n.t('settings.excludedFiles.desc'))
+            .addTextArea((text) =>
+                text.setValue(this.plugin.settings.excludedFiles.join(',')).onChange((value) => {
+                    this.plugin.settings.excludedFiles = value.split(',');
+                    this.plugin.saveSettings();
+                })
+            );
 
         new Setting(containerEl)
-            .setName('Exclude Subfolders')
-            .setDesc('Turn on this option if you want to also exclude all subfolders of the folder paths provided above.')
+            .setName(i18n.t('settings.excludeSubfolders.name'))
+            .setDesc(i18n.t('settings.excludeSubfolders.desc'))
             .addToggle((toggle) =>
                 toggle.setValue(this.plugin.settings.excludeSubfolders).onChange((value) => {
                     this.plugin.settings.excludeSubfolders = value;

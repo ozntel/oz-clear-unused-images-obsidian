@@ -1,70 +1,119 @@
-# Obsidian Plugin for Clearing Unused Images
+# Obsidian 清除未使用图片插件
 
-This plugin helps you to keep your vault clean by deleting the images you are not referencing in your markdown notes anymore.
+本插件通过删除不再在 Markdown 笔记中引用的图片，帮助您保持 vault 的整洁。
 
-The plugin simply gets all of your image links from all the markdown documents and compares these images with all image files you have available in your vault.
+插件会获取所有 Markdown 文档中的图片链接，并与 vault 中可用的所有图片文件进行比较。
 
-In case any of these image files are not referenced in any document of the vault, they will be automatically deleted.
+如果任何图片文件没有在 vault 的任何文档中被引用，它们将被自动删除。
 
-## Settings
+## 🌍 国际化 (i18n)
 
-### Deleted Image Destination
+本插件现在支持多种语言！界面将根据您的 Obsidian 语言设置自动切换。
 
-Please make sure that you select the destination for the deleted images under "Clear Unused Images Settings" tab. You have 3 options:
+**支持的语言:**
+- ✅ English (默认)
+- ✅ 简体中文
+- ✅ 繁體中文 (繁体中文)
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/delete-destination.png?raw=true">
+## 设置
 
-1. **Move to Obsidian Trash** - Files are going to be moved to the `.trash` under the Obsidian Vault.
+### 功能区图标 (Ribbon Icon)
 
-2. **Move to System Trash** - Files are going to be moved to the Operating System trash.
+如果您希望显示清除图片的功能区图标，请打开此选项。
+![功能区图标设置](images/ribbon-icon-settings.png)
 
-3. **Permanently Delete** - Files are going to be destroyed permanently. You won't beable to revert back.
+### 删除日志 (Delete Logs)
 
-### Excluded Folders
+如果您不想在删除完成后查看删除日志弹窗，请关闭此选项。如果没有删除任何图片，则不会出现此弹窗。
+![删除日志设置](images\images-deleted.png)
 
-You can exclude folders, from which you don't want images to be removed during the scan. In case there are multiple folders to be excluded, you can divide them by comma. Please ensure you provide the full path in Vault:
+### 已删除图片的目标位置
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/excluded-folders.png?raw=true">
+请确保在"清除图片设置"标签下选择已删除图片的目标位置。您有 3 个选项:
 
-You can now exclude all subfolders under the folder paths provided above:
+![删除目标设置](images/delete-destination.png)
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/exclude-subfolders.png?raw=true">
+1. **移动到 Obsidian 回收站** - 文件将被移动到 Obsidian Vault 下的 `.trash` 文件夹。
 
-## How to use
+2. **移动到系统回收站** - 文件将被移动到操作系统的回收站。
 
-1. Activate the plugin from Community Plugins
+3. **永久删除** - 文件将被永久销毁，无法恢复。
 
-2. You can either:
+### 排除的文件夹
 
-    - Activate the Ribbon Icon from plugin settings and click Icon from Left Ribbon for running the clean up:
+您可以排除某些文件夹，在扫描过程中不会移除这些文件夹中的图片。如果需要排除多个文件夹，可以用逗号分隔。请确保提供 vault 中的完整路径:
 
-    <img src="https://user-images.githubusercontent.com/55187568/118400231-0ceeed80-b661-11eb-9b07-7e22fab02694.png">
+![排除文件夹设置](images/excluded-folders.png)
 
-    - Or use Ribbon Icon or Open Command Palette (Using `Ctrl/Cmd + P` or from Ribbon) Run "Clear Unused Images".
+您现在可以排除上述提供的文件夹路径下的所有子文件夹:
 
-    <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/Clear-Command.png">
+![排除子文件夹设置](images/exclude-subfolders.png)
 
-3. If you have turned on "Delete Logs" option in plugin settings, you will see a modal popping up with an information which images are deleted from your vault:
+### 忽略特定文件
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/logs-modal.png">
+运行清理时，您将看到一个模态框，显示所有未使用的文件及其复选框。对于每个文件，您可以点击 **"忽略此文件"** 按钮，永久性地将其排除在未来的扫描之外。被忽略的文件路径将保存在插件的 data.json 文件中，不会再出现在未使用文件列表中。
 
-In case all images are used, you will see communication as below:
+当您想保留某些未使用的图片在 vault 中，而不想在每次运行清理时都被标记出来，这个功能非常有用。
 
-<img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/raw/master/images/nothing-deleted.png">
+## 使用方法
 
-**Scanned Image Formats** : jpg, jpeg, png, gif, svg, bmp, webp
+1. 在社区插件中激活本插件
 
-## Planned Features
+2. 您可以选择以下任一方式:
 
--   [x] Creating settings for users to select the destination of the deleted files
--   [x] Excluded folders settings for the scan
--   [ ] Images to be cleaned during load of the vault if users chooses.
--   [ ] Images to be cleaned every X minutes depending on user's choice
+    - 在插件设置中启用功能区图标，然后点击左侧功能区中的图标来运行清理:
 
-## Support
+![功能区图标设置](images/ribbon-icon-settings.png)
 
-If you are enjoying the plugin then you can support my work and enthusiasm by buying me a coffee:
+    - 或使用功能区图标或打开命令面板 (使用 `Ctrl/Cmd + P` 或从功能区),运行"清除未使用的图片"。
 
-<a href='https://ko-fi.com/L3L356V6Q' target='_blank'>
-    <img height='48' style='border:0px;height:48px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-</a>
+![清除命令](images/Clear-Command.png)
+
+3. 如果您在插件设置中打开了"删除日志"选项，您将看到一个弹窗，显示哪些图片已从 vault 中删除:
+
+![图片删除日志](images/images-deleted.png)
+
+如果所有图片都在使用中，您将看到如下提示:
+
+![无文件删除](images/nothing-deleted.png)
+
+**扫描的图片格式**: jpg, jpeg, png, gif, svg, bmp, webp
+
+## 计划功能
+
+-   [x] 创建用户选择已删除文件目的地的设置
+-   [x] 扫描的排除文件夹设置
+-   [x] **国际化 (i18n) 支持** ✨ 新功能!
+
+## 开发
+
+### 构建插件
+
+```bash
+# 安装依赖
+npm install
+
+# 开发模式 (监听)
+npm run dev
+
+# 生产环境构建
+npm run build
+```
+
+### 添加新翻译
+
+我们欢迎贡献更多语言支持! 有关如何添加新翻译的详细说明，请参阅 [i18n.md](doc/i18n.md)。
+
+## 许可证
+
+MIT License
+
+## 致谢
+
+特别感谢所有贡献者和 Obsidian 社区的支持!
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+# CHANGELOG
+
+All notable changes to this Obsidian Attachment Cleaner plugin will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/).
+
+## [1.1.2] - 2026-03-12
+### Changed
+- 新增基于 Obsidian 官方 API 收集被引用附件路径的核心函数 `getAttachmentPathSetForVault`
+- 新增忽略此文件选择
+
+## [1.1.3] - 2026-03-13
+### Changed
+- 修改了部分UI设计
+- 修改界面语言为中文
+
+### Add
+- 增加了对于多语言的支持
