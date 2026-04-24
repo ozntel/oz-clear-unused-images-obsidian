@@ -7,6 +7,7 @@ export interface OzanClearImagesSettings {
     excludedFolders: string;
     ribbonIcon: boolean;
     excludeSubfolders: boolean;
+    includedFolders: string;
 }
 
 export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
@@ -15,6 +16,7 @@ export const DEFAULT_SETTINGS: OzanClearImagesSettings = {
     excludedFolders: '',
     ribbonIcon: false,
     excludeSubfolders: false,
+    includedFolders: '',
 };
 
 export class OzanClearImagesSettingsTab extends PluginSettingTab {
@@ -86,6 +88,18 @@ export class OzanClearImagesSettingsTab extends PluginSettingTab {
             .addToggle((toggle) =>
                 toggle.setValue(this.plugin.settings.excludeSubfolders).onChange((value) => {
                     this.plugin.settings.excludeSubfolders = value;
+                    this.plugin.saveSettings();
+                })
+            );
+
+        new Setting(containerEl)
+            .setName('Included Folder Full Paths')
+            .setDesc(
+                'Optional. Provide folder paths divided by comma (,) to only scan images under those folders and their subfolders. Leave empty to scan the whole vault.'
+            )
+            .addTextArea((text) =>
+                text.setValue(this.plugin.settings.includedFolders).onChange((value) => {
+                    this.plugin.settings.includedFolders = value;
                     this.plugin.saveSettings();
                 })
             );
