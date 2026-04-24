@@ -30,6 +30,10 @@ You can now exclude all subfolders under the folder paths provided above:
 
 <img src="https://github.com/ozntel/oz-clear-unused-images-obsidian/blob/master/images/exclude-subfolders.png?raw=true">
 
+### Included Folders
+
+You can limit the cleanup scan to specific folders by providing one or more full vault paths divided by comma. When this setting is empty, the whole vault is scanned. When it is set, only files inside the provided folders and their subfolders are considered for deletion.
+
 ## How to use
 
 1. Activate the plugin from Community Plugins
@@ -58,6 +62,7 @@ In case all images are used, you will see communication as below:
 
 -   [x] Creating settings for users to select the destination of the deleted files
 -   [x] Excluded folders settings for the scan
+-   [x] Included folders settings for the scan
 -   [ ] Images to be cleaned during load of the vault if users chooses.
 -   [ ] Images to be cleaned every X minutes depending on user's choice
 

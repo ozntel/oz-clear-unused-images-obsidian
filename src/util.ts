@@ -9,8 +9,8 @@ const bannerRegex = /!\[\[(.*?)\]\]/i;
 const imageExtensions: Set<string> = new Set(['jpeg', 'jpg', 'png', 'gif', 'svg', 'bmp', 'webp']);
 
 // Create the List of Unused Images
-export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
-    var allAttachmentsInVault: TFile[] = getAttachmentsInVault(app, type);
+export const getUnusedAttachments = async (app: App, type: 'image' | 'all', includedFoldersSettings = '') => {
+    var allAttachmentsInVault: TFile[] = getAttachmentsInVault(app, type, includedFoldersSettings);
     var unusedAttachments: TFile[] = [];
     var usedAttachmentsSet: Set<string>;
 
@@ -26,11 +26,11 @@ export const getUnusedAttachments = async (app: App, type: 'image' | 'all') => {
 };
 
 // Getting all available images saved in vault
-const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
+const getAttachmentsInVault = (app: App, type: 'image' | 'all', includedFoldersSettings = ''): TFile[] => {
     let allFiles: TFile[] = app.vault.getFiles();
     let attachments: TFile[] = [];
     for (let i = 0; i < allFiles.length; i++) {
-        if (!['md', 'canvas'].includes(allFiles[i].extension)) {
+        if (!['md', 'canvas'].includes(allFiles[i].extension) && fileIsInIncludedFolder(allFiles[i], includedFoldersSettings)) {
             // Only images
             if (imageExtensions.has(allFiles[i].extension.toLowerCase())) {
                 attachments.push(allFiles[i]);
@@ -42,6 +42,22 @@ const getAttachmentsInVault = (app: App, type: 'image' | 'all'): TFile[] => {
         }
     }
     return attachments;
+};
+
+// Check if File is Under Included Folders
+const fileIsInIncludedFolder = (file: TFile, includedFoldersSettings: string): boolean => {
+    if (!includedFoldersSettings || includedFoldersSettings.trim() === '') {
+        return true;
+    }
+
+    const includedFolderPaths = includedFoldersSettings
+        .split(',')
+        .map((folderPath) => folderPath.trim())
+        .filter((folderPath) => folderPath.length > 0);
+
+    return includedFolderPaths.some((folderPath) => {
+        return folderPath === '/' || file.parent.path === folderPath || file.parent.path.startsWith(folderPath + '/');
+    });
 };
 
 // New Method for Getting All Used Attachments
